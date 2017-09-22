@@ -10,9 +10,14 @@ public class LP1L1 {
 			Num y = new Num("8");
 			System.out.println("running");
 			Num z = Num.add(x, y);
+			Num s = Num.subtract(x, y);
+			Num p = Num.product(x, y);
+			
 			System.out.println(z.toString());
 			z.printList();
 			System.out.println(z.list);
+			System.out.println(s.list);
+			System.out.println(p.list);
 			Num a = LP1L1.Num.power(x, 8);
 			System.out.println(a.list);
 			
@@ -20,33 +25,78 @@ public class LP1L1 {
 		
 		static class Num{
 			int base = 10;
+			int mark = 0;
+			static int markadd = 0;
+			static int marksubtra = 0;
 			LinkedList<Integer> list = new LinkedList<Integer>();
-		
+			
+			boolean negative(String s) {
+				if( s.charAt(0) != '-') {
+					return false;
+				}else {
+					return true;
+				}
+			}
+			
 			Num(String s){
-				Integer number = Integer.valueOf(s);
-				while(number%base > 0){
-					list.add(number % base);
-					number = number/base;
+				
+				if(!negative(s)) {
+					Integer number = Integer.valueOf(s);
+					while(number%base > 0){
+						list.add(number % base);
+						number = number/base;
+					}
+				}else {
+					String s1 = s.substring(1);
+					Integer number = Integer.valueOf(s1);
+					while(number%base > 0){
+						list.add(number % base);
+						number = number/base;
+						
+					}
+					mark = 1;
 				}
 			}
 			
 			Num(long x){
-				while(x%base > 0){
-					list.add((int)x % base);
-					x = x/base;
+				
+				if(x>=0) {
+					while(x%base > 0){
+						list.add((int)x % base);
+						x = x/base;
+					}
+				}else{
+					x = -x;
+					while(x%base > 0){
+						list.add((int)x % base);
+						x = x/base;
+					}
+					mark = 1;
 				}
 			}
 			
 			public String toString(){
 				String res = this.list.toString();
+				if(markadd == 1 || marksubtra == 1) {
+					return res + "-";
+				}
 				return res;
 				
 			}
 			static Num add(Num a, Num b){
 
+				if(a.mark == 1 && b.mark == 1) {
+					markadd = 1; 
+					return add(a, b);
+					
+				}else if(a.mark == 0 && b.mark == 1) {
+					return subtract(a, b);
+				}else if(a.mark == 1 && b.mark == 0) {
+					return subtract(b, a);
+				}else {
+					
 				LinkedList<Integer> l = a.list;
 				LinkedList<Integer> l1 = b.list;
-				
 				int carry = 0;
 				int r = 0;
 				
@@ -82,6 +132,8 @@ public class LP1L1 {
 				}
 				
 				return result;
+			}
+				
 			}
 			
 			static Num product(Num a, Num b){
@@ -176,14 +228,27 @@ public class LP1L1 {
 			}
 			
 			static Num subtract(Num a, Num b){
+				
+				if(a.mark == 1 && b.mark == 1) {
+					return subtract(b, a);
+					
+				}else if(a.mark == 0 && b.mark == 1) {
+					return add(a, b);
+				}else if(a.mark == 1 && b.mark == 0) {
+					marksubtra = 1;
+					return add(a, b);
+				}else {
+				
 				Num result = new Num(0);
 				LinkedList<Integer> res = result.list;
 				
+			
 				LinkedList<Integer> l = a.list;
 				LinkedList<Integer> l1 = b.list;
 				
 				
 				if(l.size()>l1.size()) {
+					
 					int carry = 0;
 					int i=0;
 					int j=0;
@@ -324,5 +389,5 @@ public class LP1L1 {
 	
 
 	}
-
+}
 

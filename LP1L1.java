@@ -10,14 +10,14 @@ public class LP1L1 {
 			Num y = new Num("8");
 			System.out.println("running");
 			Num z = Num.add(x, y);
-			
+			z.printList();
 			System.out.println(z.list);
-			//Num a = LP1L1.Num.power(x, 8);
-			//System.out.println(a);
-			//z.printList();
+			Num a = LP1L1.Num.power(x, 8);
+			System.out.println(a.list);
+			
 		    }
 		
-	static class Num{
+		static class Num{
 			int base = 10;
 			LinkedList<Integer> list = new LinkedList<Integer>();
 		
@@ -81,12 +81,33 @@ public class LP1L1 {
 				
 				return result;
 			}
-			/**Num subtract(Num a, Num b){
+			
+			static Num product(Num a, Num b){
+				
 				Num result = new Num(0);
-				return result;
-			}
-			Num product(Num a, Num b){
-				Num result = new Num(0);
+				if(a.list.size() == 1) {
+					int carry = 0;
+					for(int i = 0; i < b.list.size(); i++) {
+						result.list.add((b.list.get(i) * a.list.get(0) + carry)%10);
+						carry = (b.list.get(i) * a.list.get(0))/10;
+					}
+					if(carry != 0) {
+						result.list.add(carry);
+					}
+					return result;
+				}
+				if(b.list.size() == 1) {
+					int carry = 0;
+					for(int i = 0; i < a.list.size(); i++) {
+						result.list.add((a.list.get(i) * b.list.get(0) + carry)%10);
+						carry = (a.list.get(i) * b.list.get(0))/10;
+					}
+					if(carry != 0) {
+						result.list.add(carry);
+					}
+					return result;
+				}
+				
 				int k = 0;
 				if(a.list.size() < b.list.size()){
 					k = a.list.size() / 2;
@@ -114,11 +135,11 @@ public class LP1L1 {
 				Num result3 = product(al, bl);
 				
 				for(int i=0 ; i<2*k ; i++){
-					result1.list.add(0);
+					result1.list.addFirst(0);
 					
 				}
 				for(int i=0 ; i<k ; i++){
-					result2.list.add(0);
+					result2.list.addFirst(0);
 					
 				}
 				result =add( add(result1 , result2) , result3);
@@ -143,17 +164,152 @@ public class LP1L1 {
 					}
 				}
 			}
+			
 			void printList(){
-				System.out.print(Base + " : " );
+				System.out.print(base + " : " );
 				for(int i = 0;i < list.size();i ++){
-					System.out.print(list.get(i));
+					System.out.print(list.get(i) + " ");
 				}
 				System.out.print("\n");
 			}
-			Num power(Num x, Num n){
+			
+			static Num subtract(Num a, Num b){
+				Num result = new Num(0);
+				LinkedList<Integer> res = result.list;
 				
+				LinkedList<Integer> l = a.list;
+				LinkedList<Integer> l1 = b.list;
+				
+				
+				if(l.size()>l1.size()) {
+					int carry = 0;
+					int i=0;
+					int j=0;
+					int r=0;
+					
+					while(i<l.size() && j<l1.size()){
+						if(l.get(i) >= l1.get(j)) {
+							r = (int)l.get(i) - (int)l1.get(j) + carry;
+							carry = 0;
+						}else {
+							r = 10 + (int)l.get(i) - (int)l1.get(j) + carry;
+							carry = -1;
+						}
+						
+						res.add(r);
+						i++;
+						j++;
+					}
+					
+					
+					while(j>=l1.size() && i<l.size()){
+						r = l.get(i) + carry;
+						res.add(r);
+						carry = 0;
+						i++;
+					}
+					
+				}
+				
+				if(l.size()<l1.size()) {
+					int carry = 0;
+					int i=0;
+					int j=0;
+					int r=0;
+					
+					while(i<l.size() && j<l1.size()){
+						if(l.get(i) >= l1.get(j)) {
+							r = (int)l1.get(i) - (int)l.get(j) + carry;
+							carry = 0;
+						}else {
+							r = 10 + (int)l1.get(i) - (int)l.get(j) + carry;
+							carry = -1;
+						}
+						
+						res.add(-r);
+						i++;
+						j++;
+					}
+					
+					
+					while(j<l1.size() && i>=l.size()){
+						r = l1.get(i) + carry;
+						res.add(-r);
+						carry = 0;
+						j++;
+					}
+					
+				}
+				if(l.size()==l1.size()) {
+					for(int m = l.size()-1; m>=0; m--) {
+						if(l.get(l.size()-1)>=l1.get(l.size()-1)) {
+
+							int carry = 0;
+							int i=0;
+							int j=0;
+							int r=0;
+							
+							while(i<l.size() && j<l1.size()){
+								if(l.get(i) >= l1.get(j)) {
+									r = (int)l.get(i) - (int)l1.get(j) + carry;
+									carry = 0;
+								}else {
+									r = 10 + (int)l.get(i) - (int)l1.get(j) + carry;
+									carry = -1;
+								}
+								
+								res.add(r);
+								i++;
+								j++;
+							}
+							
+							
+							while(j>=l1.size() && i<l.size()){
+								r = l.get(i) + carry;
+								res.add(r);
+								carry = 0;
+								i++;
+							}
+							
+							return result;
+						
+						}else {
+
+							int carry = 0;
+							int i=0;
+							int j=0;
+							int r=0;
+							
+							while(i<l.size() && j<l1.size()){
+								if(l.get(i) >= l1.get(j)) {
+									r = (int)l1.get(i) - (int)l.get(j) + carry;
+									carry = 0;
+								}else {
+									r = 10 + (int)l1.get(i) - (int)l.get(j) + carry;
+									carry = -1;
+								}
+								
+								res.add(-r);
+								i++;
+								j++;
+							}
+							
+							
+							while(j<l1.size() && i>=l.size()){
+								r = l1.get(i) + carry;
+								res.add(-r);
+								carry = 0;
+								j++;
+							}
+						}
+					}
+				}
+				return result;
 			}
-			Num divide(Num a, Num b){
+				
+			
+			
+			/**Num divide(Num a, Num b){
 				
 			}
 			Num mod(Num a, Num b){
@@ -161,10 +317,10 @@ public class LP1L1 {
 			}
 			Num squareRoot(Num a){
 				
-			}
+			}**/
 		}
-	}**/
+	
 
 	}
-}
+
 

@@ -1,7 +1,7 @@
-package cs6301.g18;
+package lp1.g18;
 
 
-public class LP1L2 extends LP1L1{
+/*public class LP1L2 extends LP1L1{
 	Num power(Num x, Num n) {
 		if(n.toString().equals("0")){
 			Num zero = new Num(0);
@@ -21,3 +21,4 @@ public class LP1L2 extends LP1L1{
 		}
 	}
 }
+*/

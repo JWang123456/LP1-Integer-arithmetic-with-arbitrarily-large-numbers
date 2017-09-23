@@ -1,13 +1,13 @@
 package cs6301.g18;
 
-import cs6301.g18.LP1L1.Num;
+
 
 public class Test {
 	
 	public static void main(String[] args) {
 		LP1L1 lp1l1 = new LP1L1();
-		Num y = lp1l1.new Num(999);
-		Num x = lp1l1.new Num("8");
+		Num y = new Num(999);
+		Num x = new Num("8");
 		System.out.println("running");
 		Num z = lp1l1.add(x, y);
 		Num s = lp1l1.subtract(x, y);

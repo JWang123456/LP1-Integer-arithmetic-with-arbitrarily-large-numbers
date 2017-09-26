@@ -3,87 +3,11 @@ package lp1.g18;
 import java.util.LinkedList;
 
 public class LP1L1 {
-		
-		class Num {
-			int base = 10;
-			int mark = 0;
-			
-			LinkedList<Integer> list = new LinkedList<Integer>();
-
-			boolean negative(String s) {
-				if( s.charAt(0) != '-') {
-					return false;
-				}else {
-					return true;
-				}
-			}
-			
-			Num(String s){
-				
-				if(!negative(s)) {
-					Integer number = Integer.valueOf(s);
-					while(number%base > 0){
-						list.add(number % base);
-						number = number/base;
-					}
-				}else {
-					String s1 = s.substring(1);
-					Integer number = Integer.valueOf(s1);
-					while(number%base > 0){
-						list.add(number % base);
-						number = number/base;
-					}
-					this.mark = 1;  // This means the number is negative;
-				}
-			}
-			
-			Num(long x){
-				
-				if(x>=0) {
-					while(x%base > 0){
-						list.add((int)x % base);
-						x = x/base;
-					}
-				}else{
-					x = -x;
-					while(x%base > 0){
-						list.add((int)x % base);
-						x = x/base;
-					}
-					this.mark = 1;  // This means the number is negative;
-				}
-			}
-			
-			public String toString(){
-				StringBuilder sb = new StringBuilder();
-				
-				if(this.mark == 1) {  //not sure about this
-					
-					for(Integer i = 0; i < list.size(); i++) {
-					sb.append(list.get(i));
-					if(i < list.size() - 1) sb.append("-->");
-					}
-					sb.append("-");	
-				}else {
-					for(Integer i = 0; i < list.size(); i++) {
-						sb.append(list.get(i));
-						if(i < list.size() - 1) sb.append("-->");
-					}
-				}
-				return sb.toString();				
-			}
-			
-			public void printList(){
-				System.out.print(base + " : " );
-				for(int i = 0;i < list.size();i ++){
-					System.out.print(list.get(i) + " ");
-				}
-				System.out.print("\n");
-			}
-		}
 	
 		Num add(Num a, Num b){
-
+			
+			int base = a.getBase();
+			
 			if(a.mark == 1 && b.mark == 1) {
 				a.mark = 0;
 				b.mark = 0;
@@ -103,30 +27,30 @@ public class LP1L1 {
 			int carry = 0;
 			int r = 0;
 			
-			Num result = new Num(0);
+			Num result = new Num();
 			LinkedList<Integer> res = result.list;
 			
 			int i=0;
 			int j=0;
 			
 			while(i<l.size() && j<l1.size()){
-				r = ((int)l.get(i) + (int)l1.get(j) + carry) % 10;
+				r = ((int)l.get(i) + (int)l1.get(j) + carry) % base;
 				res.add(r);
-				carry = ((int)l.get(i) + (int)l1.get(j) + carry) / 10;
+				carry = ((int)l.get(i) + (int)l1.get(j) + carry) / base;
 				i++;
 				j++;
 			}
 			while(i>=l.size() && j<l1.size()){
-				r = (l1.get(j) + carry) % 10;
+				r = (l1.get(j) + carry) % base;
 				res.add(r);
-				carry = (l1.get(j) + carry) / 10;
+				carry = (l1.get(j) + carry) / base;
 				j++;
 
 			}
 			while(j>=l1.size() && i<l.size()){
-				r = (l.get(i) + carry) % 10;
+				r = (l.get(i) + carry) % base;
 				res.add(r);
-				carry = (l.get(i) + carry) / 10;
+				carry = (l.get(i) + carry) / base;
 				i++;
 			}
 			
@@ -141,6 +65,8 @@ public class LP1L1 {
 
 		
 		Num subtract(Num a, Num b){
+			
+			int base = a.getBase();
 			
 			if(a.mark == 1 && b.mark == 1) {
 				a.mark = 0;
@@ -160,7 +86,7 @@ public class LP1L1 {
 			LinkedList<Integer> l = a.list;
 			LinkedList<Integer> l1 = b.list;
 			
-			Num result = new Num(0);
+			Num result = new Num();
 			LinkedList<Integer> res = result.list;
 			
 			int carry = 0;
@@ -175,7 +101,7 @@ public class LP1L1 {
 						r = (int)l.get(i) - (int)l1.get(j) + carry;
 						carry = 0;
 					}else {
-						r = 10 + (int)l.get(i) - (int)l1.get(j) + carry;
+						r = base + (int)l.get(i) - (int)l1.get(j) + carry;
 						carry = -1;
 					}
 					
@@ -202,7 +128,7 @@ public class LP1L1 {
 						r = (int)l1.get(i) - (int)l.get(j) + carry;
 						carry = 0;
 					}else {
-						r = 10 + (int)l1.get(i) - (int)l.get(j) + carry;
+						r = base + (int)l1.get(i) - (int)l.get(j) + carry;
 						carry = -1;
 					}
 					
@@ -231,7 +157,7 @@ public class LP1L1 {
 								r = (int)l.get(i) - (int)l1.get(j) + carry;
 								carry = 0;
 							}else {
-								r = 10 + (int)l.get(i) - (int)l1.get(j) + carry;
+								r = base + (int)l.get(i) - (int)l1.get(j) + carry;
 								carry = -1;
 							}
 							
@@ -248,7 +174,7 @@ public class LP1L1 {
 								r = (int)l1.get(i) - (int)l.get(j) + carry;
 								carry = 0;
 							}else {
-								r = 10 + (int)l1.get(i) - (int)l.get(j) + carry;
+								r = base + (int)l1.get(i) - (int)l.get(j) + carry;
 								carry = -1;
 							}
 							
@@ -271,27 +197,44 @@ public class LP1L1 {
 
 		Num product(Num a, Num b){
 			
-			Num result = new Num(0);
+			int base = a.getBase();
+			
+			Num result = new Num();
+			
+			char enda = a.toString().charAt(a.toString().length() - 1);
+			char endb = b.toString().charAt(b.toString().length() - 1);
+			
+//			if((enda == '-' || endb == '-') && !(enda == '-' && endb == '-')) {
+//				result.mark = 1;
+//			}
+			
 			if(a.list.size() == 1) {
 				int carry = 0;
 				for(int i = 0; i < b.list.size(); i++) {
-					result.list.add((b.list.get(i) * a.list.get(0) + carry)%10);
-					carry = (b.list.get(i) * a.list.get(0))/10;
+					result.list.add((b.list.get(i) * a.list.get(0) + carry)%base);
+					carry = (b.list.get(i) * a.list.get(0))/base;
 				}
 				if(carry != 0) {
 					result.list.add(carry);
 				}
+//				if((enda == '-' || endb == '-') && !(enda == '-' && endb == '-')) {
+//					result.mark = 1;
+//				}
 				return result;
 			}
+			
 			if(b.list.size() == 1) {
 				int carry = 0;
 				for(int i = 0; i < a.list.size(); i++) {
-					result.list.add((a.list.get(i) * b.list.get(0) + carry)%10);
-					carry = (a.list.get(i) * b.list.get(0))/10;
+					result.list.add((a.list.get(i) * b.list.get(0) + carry)%base);
+					carry = (a.list.get(i) * b.list.get(0))/base;
 				}
 				if(carry != 0) {
 					result.list.add(carry);
 				}
+//				if((enda == '-' || endb == '-') && !(enda == '-' && endb == '-')) {
+//					result.mark = 1;
+//				}
 				return result;
 			}
 			
@@ -302,10 +245,10 @@ public class LP1L1 {
 				k = b.list.size() / 2;
 			}
 			
-			Num al = new Num(0);
-			Num ah = new Num(0);
-			Num bl = new Num(0);
-			Num bh = new Num(0);
+			Num al = new Num();
+			Num ah = new Num();
+			Num bl = new Num();
+			Num bh = new Num();
 			
 			for(int i=0 ; i<k ; i++){
 				al.list.add(a.list.get(i));
@@ -332,15 +275,20 @@ public class LP1L1 {
 				
 			}
 			result =add( add(result1 , result2) , result3);
+			if((enda == '-' || endb == '-') && !(enda == '-' && endb == '-')) {
+				result.mark = 1;
+			}
 			return result;
 		}
 		
 		
-		
 		Num power(Num x, long n){
+			
+			
+			
 			if(n == 0){
-				Num zero = new Num(0);
-				return zero;
+				Num one = new Num(1);
+				return one;
 			}
 			if(n == 1){
 				return  x;
@@ -356,9 +304,93 @@ public class LP1L1 {
 			}
 		}
 		
-		Num divide(Num a, Num b){
-			return a;	
+	
+		Num power(Num x, Num n) {
+			if(n.toString().equals("0")){
+				Num one = new Num(1);
+				return one;
+			}
+			if(n.toString().equals("1")){
+				return  x;
+			}
+			else{
+				Num s = power(x, divide(n, new Num(2)));
+				if(mod(n, new Num(2)).equals(new Num(0))){
+					return product(s, s);
+				}
+				else{
+					return product(product(s, s), x);
+				}
+			}
 		}
+		
+		int compare(Num a, Num b) {
+			
+			
+			
+			LinkedList<Integer> l = a.list;
+			LinkedList<Integer> l1 = b.list;
+		
+			if(l.size()>l1.size()) {
+				return 1;
+			}else if(l.size()<l1.size()) {
+				return -1;
+			}else{
+				for(int m = l.size()-1; m>=0; m--) {
+					if(l.get(m)>l1.get(m)) {
+						return 1;
+					}else if(l.get(m) < l1.get(m)){
+						return -1;
+					}else {
+						continue;
+					}
+				}
+				return 0;
+			}
+		}
+
+		
+		Num divide(Num a, Num b){
+			
+			a.setBase(2);
+			b.setBase(2);
+			
+			Num one = new Num(1);
+			one.setBase(2);
+			Num mid = new Num(0);
+			mid.setBase(2);
+			
+			mid = add(a, one);
+			mid.list.pollFirst();
+			
+			while(compare(mid, a) < 0 && compare(mid, one) > 0) {
+			   // mid.list.pollFirst();
+			        
+			    if(compare(product(mid,b),a) == 0) {
+			        return mid;
+			    }
+			    if(compare(product(mid,b),a) == 1) {
+			    	a = mid;
+			    	mid = add(a, one);
+			    	mid.list.pollFirst();
+			        
+			        continue;
+			    }else{
+			    
+			    	if(compare(product(add(mid,one),b),a) == 1) {
+			    		return mid;
+			    	}else {
+			    		one = mid;
+			    		mid = add(a, mid);
+			    		mid.list.pollFirst();
+			    		
+			    		continue;
+			    	}
+			    }
+			}
+			   return null; 
+		}	
+		
 		
 		Num mod(Num a, Num b){
 			return a;

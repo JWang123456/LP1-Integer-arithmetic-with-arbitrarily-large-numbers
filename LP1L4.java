@@ -13,7 +13,7 @@ public class LP1L4 {
 	
 	static Num last = new Num(0);
 	static LP1L1 lp1l1 = new LP1L1();
-	static LP1L2 lp1l2 = new LP1L2();
+	//static LP1L2 lp1l2 = new LP1L2();
 	
 	static void stringProcess(String str) {
 		

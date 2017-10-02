@@ -14,7 +14,7 @@ public class LP1L3 {
 	public static void main(String[] args) throws FileNotFoundException {
 		Num last = new Num(0);
 		LP1L1 lp1l1 = new LP1L1();
-		LP1L2 lp1l2 = new LP1L2();
+		//LP1L2 lp1l2 = new LP1L2();
 	    Scanner in = new Scanner(new File("input.in"));
 	    while(in.hasNext()) {
 	    	String str = in.nextLine();
